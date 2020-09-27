@@ -1,0 +1,79 @@
+<div class="left-content">
+    <h2>Таблица уроков</h2>
+    <form [formGroup]="lesson">
+        <div [formGroup]="lesson">
+            <div class="form-group" [formGroup]="lesson">
+                <label>Номер</label>
+                <input class="form-control" type="number" name="number" formControlName="number" min="1" />
+            </div>
+            <div class="form-group" [formGroup]="lesson">
+                <label>Дата урока</label>
+                <input class="form-control" type="date" name="dateLesson" formControlName="dateLesson"/>
+            </div>
+            <div class="form-group" [formGroup]="lesson">
+                <label>Тема урока</label>
+                <input class="form-control" type="text" name="topic" formControlName="topic" />
+            </div>
+            <div class="form-group" [formGroup]="lesson">
+                <label>Домашнее задание</label>
+                <input type="text" class="form-control" name="homework" formControlName="homework" />
+            </div>
+            <div class="form-group" [formGroup]="lesson">
+                <label>Примечание</label>
+                <input type="text" class="form-control" name="note"  formControlName="note" />
+            </div>
+            <div class="form-group" [formGroup]="lesson">
+                <button class="btn btn-default" (click)="addLesson()" [disabled]="lesson.invalid">
+                    Добавить
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="right-content">
+    <h2>Уроки</h2>
+    <form [formGroup]="raiting">
+        <table>
+            <tr class="color">
+                <th>Номер</th>
+                <th>Дата урока</th>
+                <th>Тема урока</th>
+                <th>Домашнее задание</th>
+                <th>Примечание</th>
+            </tr>
+            <tr *ngFor="let lesson of lessons">
+                <td>{{lesson.number}}</td>
+                <td>{{lesson.dateLesson}}</td>
+                <td>{{lesson.topic}} </td>
+                <td>{{lesson.homework}}</td>
+                <td>{{lesson.note}}</td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="content">
+    <form [formGroup]="raiting">
+        <table>
+            <tr class="color">
+                <th>Ф.И.О.</th>
+                <th *ngFor="let l of lessons">{{l.dateLesson}} {{l.topic}}</th>
+                <th>Средний балл</th>
+                <th>Округленный балл</th>
+            </tr>
+            <tr *ngFor="let s of student">
+                <th>
+                    <input class="form-control" type="text" name="student" formControlName="student"/>
+                </th>
+                <th *ngFor="let l of lessons">
+                    <select class="form-control" name="raits" #r>
+                        <option *ngFor="let r of raits" [value]="r">
+                            {{r}}
+                        </option>
+                    </select>
+                </th>
+                <th>{{s.score}}</th>
+                <th>{{s.averageScore}}</th>
+            </tr>
+        </table>
+    </form>
+</div>
