@@ -1,20 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {JournalService} from './journal.service';
-
 import { AppComponent } from './app.component';
+import { DatePipe } from '@angular/common';
+import { JournalComponent } from './journal/journal.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    JournalComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [JournalService],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

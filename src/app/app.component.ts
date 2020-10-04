@@ -1,68 +1,46 @@
 import { Component } from '@angular/core';
-import { JournalService } from './journal.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
-export class Lesson {
-  constructor(
-    public number: number,
-    public dateLesson: Date,
-    public topic: string,
-    public homework: string,
-    public note: string
-  ) {}
-}
-
-export class Raiting {
-  public student: string;
-  public rait: Array<number> = [];
-  public averageScore: number;
-  public score: number;
-  constructor(value: string) {
-    this.student = value;
-  }
-
-  addRaiting(raiting: number) {
-    this.rait.push(raiting);
-  }
-}
+import { DatePipe } from '@angular/common';
+import { JournalService } from './journal.service';
+import { Lesson, Student } from './journal/journal.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  providers: [JournalService],
+  providers: [],
 })
 export class AppComponent {
-  lessons: Lesson[] = [];
-  student: Raiting[] = [
-    new Raiting('name1'),
-    new Raiting('name2'),
-    new Raiting('name3'),
+  lessonss: Lesson[] = [];
+  studentss: Student[] = [
+    new Student('name1'),
+    new Student('name2'),
+    new Student('name3'),
   ];
-
-  raits: number[] = [1, 2, 3, 4, 5];
-  raitNumber: number;
-
+  raitinggs: number[] = [1, 2, 3, 4, 5];
+  constructor(public service:JournalService, private datePipe: DatePipe) {}
   lesson: FormGroup = new FormGroup({
     number: new FormControl(1, Validators.required),
-    dateLesson: new FormControl(new Date(), [Validators.required]),
+    date: new FormControl(new Date(), [Validators.required]),
     topic: new FormControl('Наименование', Validators.required),
     homework: new FormControl('Дз', Validators.required),
     note: new FormControl('Примечание'),
   });
 
-  raiting: FormGroup = new FormGroup({
+  student: FormGroup = new FormGroup({
     student: new FormControl('ФИО', Validators.required),
     rait: new FormControl(1, Validators.required),
-    averageScore: new FormControl(1, Validators.required),
+    avScr: new FormControl(1, Validators.required),
     score: new FormControl(1, Validators.required),
   });
 
-  constructor(private journal: JournalService) {}
   addLesson() {
-    this.journal.addLesson();
+    var lesson = new Lesson(
+      this.lessonss.length,
+      this.lesson.controls["number"].value,
+     this.lesson.controls["date"].value,
+      this.lesson.controls["topic"].value,
+      this.lesson.controls["homework"].value,
+      this.lesson.controls["note"].value);
+    this.lessonss.push(lesson);
   }
-
-  // addRait() {
-  //   this.journal.addRait(this.raitNumber, );
-  // }
 }

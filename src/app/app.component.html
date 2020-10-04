@@ -1,103 +1,88 @@
-<div class="left-content">
-    <h2>Таблица уроков</h2>
-    <form [formGroup]="lesson">
-        <div [formGroup]="lesson">
-            <div class="form-group" [formGroup]="lesson">
-                <label>Номер</label>
-                <input class="form-control" type="number" name="number" formControlName="number" min="1" />
-                <div class="alert alert-danger"
-                            *ngIf="lesson.controls['number'].invalid && lesson.controls['number'].touched">
-                            Заполните поле
-                        </div>
-            </div>
-            <div class="form-group" [formGroup]="lesson">
-                <label>Дата урока</label>
-                <input class="form-control" type="date" name="dateLesson" formControlName="dateLesson"/>
-                <div class="alert alert-danger"
-                            *ngIf="lesson.controls['dateLesson'].invalid && lesson.controls['dateLesson'].touched">
-                            Заполните поле
-                        </div>
-            </div>
-            <div class="form-group" [formGroup]="lesson">
-                <label>Тема урока</label>
-                <input class="form-control" type="text" name="topic" formControlName="topic" />
-                <div class="alert alert-danger"
-                *ngIf="lesson.controls['topic'].invalid && lesson.controls['topic'].touched">
-                Заполните поле
-            </div>
-            </div>
-            <div class="form-group" [formGroup]="lesson">
-                <label>Домашнее задание</label>
-                <input type="text" class="form-control" name="homework" formControlName="homework" />
-                <div class="alert alert-danger"
-                *ngIf="lesson.controls['homework'].invalid && lesson.controls['homework'].touched">
-                Заполните поле
-            </div>
-            </div>
-            <div class="form-group" [formGroup]="lesson">
-                <label>Примечание</label>
-                <input type="text" class="form-control" name="note"  formControlName="note" />
-                <div class="alert alert-danger"
-                *ngIf="lesson.controls['note'].invalid && lesson.controls['note'].touched">
-                Заполните поле
-            </div>
-            </div>
-            <div class="form-group" [formGroup]="lesson">
-                <button class="btn btn-default" (click)="addLesson()" [disabled]="lesson.invalid">
-                    Добавить
-                </button>
-            </div>
-        </div>
-    </form>
+<h2>Таблица уроков</h2>
+<form [formGroup]="lesson" (ngSubmit)="addLesson()">
+  <div>
+    <label>Номер</label>
+    <input type="number" name="number" formControlName="number" />
+    <div *ngIf="lesson.controls['number'].invalid && lesson.controls['number'].touched">
+      Не указан номер занятия
+    </div>
+  </div>
+  <div>
+    <label>Дата урока</label>
+    <input type="date" name="date" formControlName="date" required appAppDer />
+    <div *ngIf="lesson.controls['date'].untouched">
+      Не корректная дата
+    </div>
+  </div>
+  <div>
+    <label>Тема урока</label>
+    <input name="topic" formControlName="topic" />
+    <div *ngIf="lesson.controls['topic'].invalid && lesson.controls['topic'].touched">
+      Не указана тема урока
+    </div>
+  </div>
+  <div>
+    <label>Домашнее задание</label>
+    <input name="homework" formControlName="homework" />
+    <div *ngIf="lesson.controls['homework'].invalid && lesson.controls['homework'].touched">
+      Не указано Домашнее задание
+    </div>
+  </div>
+  <div>
+    <label>Примечание</label>
+    <input name="note" formControlName="note" />
+    <div *ngIf="lesson.controls['note'].invalid && lesson.controls['note'].touched">
+      Не указано Примечание
+    </div>
+  </div>
+  <div>
+    <button [disabled]="lesson.invalid">
+      Добавить урок
+    </button>
+  </div>
+</form>
+
+<div>
+  <h3>Уроки</h3>
+  <table>
+    <tr>
+      <th>Номер</th>
+      <th>Дата урока</th>
+      <th>Тема урока</th>
+      <th>Домашнее задание</th>
+      <th>Примечание</th>
+    </tr>
+    <tr *ngFor="let l of lessonss">
+      <td>{{l.number}}</td>
+      <td>{{l.date}}</td>
+      <td>{{l.topic}} </td>
+      <td>{{l.homework}}</td>
+      <td>{{l.note}}</td>
+    </tr>
+  </table>
 </div>
-<div class="right-content">
-    <h2>Уроки</h2>
-    <form [formGroup]="raiting">
-        <table>
-            <tr class="color">
-                <th>Номер</th>
-                <th>Дата урока</th>
-                <th>Тема урока</th>
-                <th>Домашнее задание</th>
-                <th>Примечание</th>
-            </tr>
-            <tr *ngFor="let lesson of lessons">
-                <td>{{lesson.number}}</td>
-                <td>{{lesson.dateLesson}}</td>
-                <td>{{lesson.topic}} </td>
-                <td>{{lesson.homework}}</td>
-                <td>{{lesson.note}}</td>
-            </tr>
-        </table>
-    </form>
-</div>
-<div class="content">
-    <form [formGroup]="raiting">
-        <table>
-            <tr class="color">
-                <th>Ф.И.О.</th>
-                <th *ngFor="let l of lessons">{{l.dateLesson}} {{l.topic}}</th>
-                <th>Средний балл</th>
-                <th>Округленный балл</th>
-            </tr>
-            <tr *ngFor="let s of student">
-                <th>
-                    <input class="form-control" type="text" name="student" formControlName="student"/>
-                </th>
-                <th *ngFor="let l of lessons">
-                    <select class="form-control" name="raits" #r>
-                        <option *ngFor="let r of raits" [value]="r">
-                            {{r}}
-                        </option>
-                        <div class="alert alert-danger"
-                        *ngIf="raiting.controls['raits'].invalid && lesson.controls['raits'].touched">
-                        Заполните поле
-                    </div>
-                    </select>
-                </th>
-                <th>{{s.score}}</th>
-                <th>{{s.averageScore}}</th>
-            </tr>
-        </table>
-    </form>
+
+<div>
+  <h3>Оценки</h3>
+
+  <table>
+    <tr>
+      <th>Ф.И.О.</th>
+      <th *ngFor="let l of lessonss">{{l.date}} {{l.topic}}</th>
+      <th>Средний Балл</th>
+      <th>Округленный Балл</th>
+    </tr>
+    <tr *ngFor="let s of studentss">
+      <th>{{s.name}}</th>
+      <th *ngFor="let l of lessonss">
+        <select class="form-control" name="rait" (change)="service.addRait(r.value, s, l)" #r>
+          <option *ngFor="let r of raitinggs" [value]="r">
+            {{r}}
+          </option>
+        </select>
+      </th>
+      <th>{{s.raiting}}</th>
+      <th>{{s.avrg}}</th>
+    </tr>
+  </table>
 </div>
